@@ -3,14 +3,29 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  resources :todos do
+    get 'toggle_completed', :on => :member
+    # member do
+    #   post :toggle
+     end
+
+    collection do
+      post :toggle_all
+      get :active
+      get :completed
+      delete :destroy_completed
+    end
+  end
+
+
+  root 'todos#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
+  # get 'item/:id/active' => 'todos#active', as: :active
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
