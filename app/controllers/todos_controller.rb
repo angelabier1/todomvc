@@ -11,6 +11,7 @@ class TodosController < ApplicationController
 
 	def create
 		@todo = Todo.new(todo_params)
+		@todo.save
 		if @todo.save
 		  redirect_to root_path
 		else
@@ -30,30 +31,40 @@ class TodosController < ApplicationController
 		Todo.update_all(completed: params[:completed] ? 't' : 'f')
 
 		@todos = Todo.all
+		render :nothing => true
 	end
 
-	def toggle_completed
+	def toggle_complete
 		@todo = Todo.find(params[:id])
 		@todo.toggle!(:completed)
 		render :nothing => true
 	end
+
+
 	def active
-		@todos = Todo.select {|todo| todo.completed == false}
+		@todos = Todo.where(completed: 'f')
+		render :active
 	end
 
 	def completed
-		@todos = Todo.select {|todo| todo.completed}
+		@todos = Todo.completed
+	end
+
+	def destroy_completed
+		@todos = Todo.completed.all
+		@todos.destroy
 	end
 
 	def destroy
 		@todo = Todo.find(params[:id])
 		@todo.destroy
+		render :index
 	end
 
 	private
 
 	def todo_params
-		params.require(:todo).permit(:title)
+		params.require(:todo).permit(:title, :completed)
 	end
 end
 

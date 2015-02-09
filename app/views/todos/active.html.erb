@@ -1,0 +1,18 @@
+
+<section id="todoapp" class="<%= 'has_todos' if @todos.count > 0 %>">
+
+
+  <header id='header'>
+    <h1>todos</h1>
+    <%= form_for(Todo.new, remote: true) do |f| %>
+        <%= f.text_field :title, placeholder: "What needs to be done?", id: "new-todo", autofocus: 'true' %>
+        <%= f.submit "Add todo", class: "button" %>
+    <% end %>
+  </header>
+
+
+  <%= render 'active' if @todos.active.count > 0 %>
+  <%= render 'footer' if @todos.active.count > 0 %>
+
+
+</section>

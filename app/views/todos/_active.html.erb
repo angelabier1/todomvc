@@ -1,9 +1,12 @@
+
 <section id="main">
   <%= form_tag(toggle_all_todos_path, method: :post, remote: true) do %>
       <input name="completed" id="toggle-all" type="checkbox" value="true" data-behavior="submit_on_check" <%= "checked" if @todos.active.count > 0 %>>
   <% end %>
   <label for="toggle-all">Mark all as complete</label>
   <ul id="todo-list">
-    <%= render @todos.completed %>
+    <%= render @todos.active %>
   </ul>
 </section>
+
+
