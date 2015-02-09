@@ -1,6 +1,6 @@
 <footer id="footer">
   <!-- This should be `0 items left` by default -->
-  <span id="todo-count"><strong><%= @todos.active.count%></strong><%= @todos.active.count === 1 ? ' item': ' items'%> left</span>
+  <span id="todo-count"><strong><%= pluralize(@all_todos.active.count, item)%></strong> left</span>
   <!-- Remove this if you don't implement routing -->
   <ul id="filters">
     <li>
@@ -14,5 +14,5 @@
     </li>
   </ul>
   <!-- Hidden if no completed items are left ↓ -->
-  <%= button_tag id: 'clear-completed', class: 'button' if @todos.completed.count > 0 %>
+  <%= button_tag id: 'clear-completed', class: 'button' if @all_todos.completed.count > 0 %>
 </footer>

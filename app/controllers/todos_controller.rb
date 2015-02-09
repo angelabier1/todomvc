@@ -1,8 +1,16 @@
 class TodosController < ApplicationController
+	before_action :find_todo, only: [:update, :destroy, :edit]
 	skip_before_action :verify_authenticity_token
 
+
 	def index
-		@todos = Todo.all
+		@todo = Todo.new
+		@all_todos = Todo.all
+		if params[:completed] == "true"
+			@all_todos = @all_todos.where(completed: true)
+		elsif params[:completed] == "false"
+			@all_todos = @all_todos.where(completed: false)
+		end
 	end
 
 	def new
@@ -10,13 +18,21 @@ class TodosController < ApplicationController
 	end
 
 	def create
-		@todo = Todo.new(todo_params)
-		@todo.save
-		if @todo.save
-		  redirect_to root_path
-		else
-			render "new"
-		end
+		@todo = Todo.create(params.require(:todo).permit(:title,:completed))
+		redirect_to root_url
+		# @todo = Todo.new(todo_params)
+		# @todo.save
+		# if @todo.save
+		#   redirect_to root_path
+		# else
+		# 	render "new"
+		# end
+	end
+
+	def update
+		@todo = Todo.find(params[:id])
+		@todo.update(params.require(:todo).permit(:completed))
+		redirect_to root_url
 	end
 
 	def edit
@@ -42,12 +58,12 @@ class TodosController < ApplicationController
 
 
 	def active
-		@todos = Todo.where(completed: 'f')
+		@all_todos = Todo.where(completed: 'f')
 		render :active
 	end
 
 	def completed
-		@todos = Todo.completed
+		@all_todos = Todo.where(completed: 't')
 	end
 
 	def destroy_completed
@@ -58,13 +74,21 @@ class TodosController < ApplicationController
 	def destroy
 		@todo = Todo.find(params[:id])
 		@todo.destroy
-		render :index
+		redirect_to root_url
+	end
+
+	def clear_completed
+		Todo.where(completed: true).update_all(completed: false)
 	end
 
 	private
 
 	def todo_params
-		params.require(:todo).permit(:title, :completed)
+		params.require(:todo).permit(:completed)
+	end
+
+	def find_todo
+		@todo = Todo.find(params[:id])
 	end
 end
 
