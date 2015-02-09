@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>TodomvcApp</title>
+  <title>TodoMVC</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -10,5 +10,14 @@
 
 <%= yield %>
 
+
+
+
+<!--<script src=<%= javascript_include_tag 'application'%>></script>-->
+<footer id="info">
+  <p>Double-click to edit a todo</p>
+  <p>Created by <a href="mailto: abier@corelando.com">Angela Bier</a></p>
+  <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>
 </body>
 </html>

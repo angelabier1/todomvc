@@ -1,25 +1,18 @@
 class Todo < ActiveRecord::Base
 	# scope :completed, -> { where("completed = ?", 't') }
 	# scope :active, -> { where("completed = ?", 'f') }
-	validates :item, presence: true
+	validates :title, presence: true
 
-
-	def completed
-		if completed == 't'
-		true
-		else
-			nil
-		end
-
+	def title=(title)
+		write_attribute(:title, title.strip)
 	end
 
-	def active
-	  if completed == 'f'
-	  true
-	  else
-	  nil
-	  end
+	def self.active
+	  select{|a| a.completed == false}
+	end
 
+	def self.completed
+		select{|c| c.completed}
 	end
 
 end
