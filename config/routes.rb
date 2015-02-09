@@ -3,15 +3,22 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  concern :toggleable do
-    post 'toggle'
-  end
+  # concern :toggleable do
+  #   post 'toggle'
+  # end
 
-  resources :todos, concerns: :toggleable do
+  resources :todos do
        collection do
          get 'active'
          get 'completed'
+         post 'toggle'
+         post 'toggle_all'
        end
+
+    member do
+      get 'toggle_complete'
+      get 'toggle'
+    end
   end
 
   root 'todos#index'
