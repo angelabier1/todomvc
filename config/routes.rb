@@ -13,6 +13,7 @@ Rails.application.routes.draw do
          get 'completed'
          post 'toggle'
          post 'toggle_all'
+         patch 'clear_completed'
        end
 
     member do
