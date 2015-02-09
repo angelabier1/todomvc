@@ -3,20 +3,16 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  resources :todos do
-    get 'toggle_completed', :on => :member
-    # member do
-    #   post :toggle
-     end
-
-    collection do
-      post :toggle_all
-      get :active
-      get :completed
-      delete :destroy_completed
-    end
+  concern :toggleable do
+    post 'toggle'
   end
 
+  resources :todos, concerns: :toggleable do
+       collection do
+         get 'active'
+         get 'completed'
+       end
+  end
 
   root 'todos#index'
 
@@ -59,7 +55,7 @@ Rails.application.routes.draw do
   #   concern :toggleable do
   #     post 'toggle'
   #   end
-  #   resources :posts, concerns: :toggleable
+    # resources :todos, concerns: :toggleable
   #   resources :photos, concerns: :toggleable
 
   # Example resource route within a namespace:
