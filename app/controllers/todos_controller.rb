@@ -1,4 +1,5 @@
 class TodosController < ApplicationController
+	skip_before_action :verify_authenticity_token
 
 	def index
 		@todos = Todo.all
@@ -9,8 +10,12 @@ class TodosController < ApplicationController
 	end
 
 	def create
-		@todo = Todo.create(todo_params)
-		redirect_to todos_path
+		@todo = Todo.new(todo_params)
+		if @todo.save
+		  redirect_to root_path
+		else
+			render "new"
+		end
 	end
 
 	def edit
@@ -21,19 +26,23 @@ class TodosController < ApplicationController
 		@todo = Todo.find(params[:id])
 	end
 
+	def toggle_all
+		Todo.update_all(completed: params[:completed] ? 't' : 'f')
+
+		@todos = Todo.all
+	end
+
 	def toggle_completed
 		@todo = Todo.find(params[:id])
 		@todo.toggle!(:completed)
 		render :nothing => true
 	end
 	def active
-		# @todo = Todo.find(params[:id])
-		@todo = Todo.active
+		@todos = Todo.select {|todo| todo.completed == false}
 	end
 
 	def completed
-		@todo = Todo.find(params[:id])
-		@todo.completed
+		@todos = Todo.select {|todo| todo.completed}
 	end
 
 	def destroy
@@ -44,7 +53,7 @@ class TodosController < ApplicationController
 	private
 
 	def todo_params
-		params.require(:todo).permit(:item, :completed)
+		params.require(:todo).permit(:title)
 	end
 end
 
