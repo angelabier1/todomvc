@@ -1,6 +1,6 @@
 <footer id="footer">
   <!-- This should be `0 items left` by default -->
-  <span id="todo-count"><strong>0</strong> item left</span>
+  <span id="todo-count"><strong><%= @todos.count%></strong><%if @todos.count == 1%><%= ' item left'%> <% else%><%= ' items left'%><%end%></span>
   <!-- Remove this if you don't implement routing -->
   <ul id="filters">
     <li>
@@ -14,5 +14,5 @@
     </li>
   </ul>
   <!-- Hidden if no completed items are left ↓ -->
-  <button id="clear-completed"></button>
+  <%= button_tag id: 'clear-completed', class: 'button' if @todos.completed.count > 0 %>
 </footer>
